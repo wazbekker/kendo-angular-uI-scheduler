@@ -10,7 +10,6 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { AppComponent } from './app.component';
 import { EditFormComponent } from './shared/edit-form/edit-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EditService } from './shared/edit.service';
 
 @NgModule({
   imports: [
@@ -23,7 +22,7 @@ import { EditService } from './shared/edit.service';
     DropDownsModule
   ],
   declarations: [AppComponent, EditFormComponent],
-  providers: [EditService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -4,6 +4,7 @@ import {
   CreateFormGroupArgs,
   EditMode,
   EventClickEvent,
+  EventStyleArgs,
   RemoveEvent,
   SlotClickEvent
 } from '@progress/kendo-angular-scheduler';
@@ -15,42 +16,45 @@ import { CustomEvent } from './shared/custom-event.interface';
 })
 export class AppComponent {
   public selectedDate: Date = new Date();
-  public selectedViewIndex = 1;
+  public selectedViewIndex = 0;
   public editedEvent: any;
   public editMode: EditMode;
   public isNew: boolean;
   public formGroup: FormGroup;
 
   public eventLookups = [
-    { text: 'DAM Trading Day', value: 1 },
-    { text: 'FPM Weekly Trading Day', value: 2 },
-    { text: 'FPM Monthly Trading Day', value: 3 }
-  ] as Array<{ text: string; value: number }>;
+    { text: 'DAM Trading Day', value: 1, color: 'lightblue' },
+    { text: 'FPM Weekly Trading Day', value: 2, color: 'lightgreen' },
+    { text: 'FPM Monthly Trading Day', value: 3, color: 'lightpink' }
+  ] as Array<{ text: string; value: number; color: string }>;
 
   public events = [
     {
       id: 1,
-      eventType: 1,
-      title: 'DAM Trading Day',
+      eventType: this.eventLookups[0].value,
+      title: this.eventLookups[0].text,
       start: new Date(2021, 6, 1),
       end: new Date(2021, 6, 1),
-      isAllDay: true
+      isAllDay: true,
+      color: this.eventLookups[0].color
     } as CustomEvent,
     {
       id: 2,
-      eventType: 2,
-      title: 'FPM Weekly Trading Day',
+      eventType: this.eventLookups[1].value,
+      title: this.eventLookups[1].text,
       start: new Date(2021, 6, 2),
       end: new Date(2021, 6, 2),
-      isAllDay: true
+      isAllDay: true,
+      color: this.eventLookups[1].color
     } as CustomEvent,
     {
       id: 3,
-      eventType: 3,
-      title: 'FPM Monthly Trading Day',
+      eventType: this.eventLookups[2].value,
+      title: this.eventLookups[2].text,
       start: new Date(2021, 6, 3),
       end: new Date(2021, 6, 3),
-      isAllDay: true
+      isAllDay: true,
+      color: this.eventLookups[2].color
     } as CustomEvent
   ] as CustomEvent[];
 
@@ -154,4 +158,8 @@ export class AppComponent {
   public cancelHandler(): void {
     this.editedEvent = undefined;
   }
+
+  public getEventStyles = (args: EventStyleArgs) => {
+    return { backgroundColor: args.event.dataItem.color };
+  };
 }

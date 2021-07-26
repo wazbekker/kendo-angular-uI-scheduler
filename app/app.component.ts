@@ -6,7 +6,6 @@ import { sampleData, displayDate } from './events-utc';
   selector: 'my-app',
   template: `
     <kendo-scheduler
-      [kendoSchedulerBinding]="events"
       [selectedDate]="selectedDate"
       [selectedViewIndex]="1"
       style="height: 650px;"
@@ -18,5 +17,5 @@ import { sampleData, displayDate } from './events-utc';
 })
 export class AppComponent {
   public selectedDate: Date = displayDate;
-  public events: SchedulerEvent[] = sampleData;
+  // public events: SchedulerEvent[] = sampleData;
 }

@@ -1,8 +1,5 @@
-export interface CustomEvent {
-  eventId: number;
+import { SchedulerEvent } from '@progress/kendo-angular-scheduler';
+
+export interface CustomEvent extends SchedulerEvent {
   eventType: number;
-  title: string;
-  start: Date;
-  end: Date;
-  isAllDay: boolean;
 }

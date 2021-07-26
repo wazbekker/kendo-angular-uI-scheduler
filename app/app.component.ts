@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   CreateFormGroupArgs,
   CrudOperation,
@@ -9,7 +9,6 @@ import {
   SchedulerEvent,
   SlotClickEvent
 } from '@progress/kendo-angular-scheduler';
-import { filter } from 'rxjs/operators';
 import { EditService } from './shared/edit.service';
 
 @Component({
@@ -23,6 +22,12 @@ export class AppComponent {
   public editMode: EditMode;
   public isNew: boolean;
   public formGroup: FormGroup;
+
+  public eventLookups = [
+    { text: 'DAM Trading Day', value: 1 },
+    { text: 'FPM Weekly Trading Day', value: 2 },
+    { text: 'FPM Monthly Trading Day', value: 3 }
+  ] as Array<{ text: string; value: number }>;
 
   constructor(
     private editService: EditService,
@@ -39,28 +44,28 @@ export class AppComponent {
     return this.editService.events$;
   }
 
-  public fields() {
-    return this.editService.fields;
-  }
+  // public fields() {
+  //   return this.editService.fields;
+  // }
 
   public createFormGroup(args: CreateFormGroupArgs): FormGroup {
-    // const dataItem = args.dataItem;
-    // const isOccurrence = args.mode === EditMode.Occurrence;
-    // const exceptions = isOccurrence ? [] : dataItem.recurrenceExceptions;
+    const dataItem = args.dataItem;
+    const isOccurrence = args.mode === EditMode.Occurrence;
+    const exceptions = isOccurrence ? [] : dataItem.recurrenceExceptions;
 
     this.formGroup = this.formBuilder.group({
-      eventType: [1]
-      // id: args.isNew ? this.getNextId() : dataItem.id,
-      // start: [dataItem.start, Validators.required],
-      // end: [dataItem.end, Validators.required],
-      // startTimezone: [dataItem.startTimezone],
-      // endTimezone: [dataItem.endTimezone],
-      // isAllDay: dataItem.isAllDay,
-      // title: dataItem.title,
-      // description: dataItem.description,
-      // recurrenceRule: dataItem.recurrenceRule,
-      // recurrenceId: dataItem.recurrenceId,
-      // recurrenceExceptions: [exceptions]
+      eventType: [1],
+      id: args.isNew ? this.getNextId() : dataItem.id,
+      start: [dataItem.start, Validators.required],
+      end: [dataItem.end, Validators.required],
+      startTimezone: [dataItem.startTimezone],
+      endTimezone: [dataItem.endTimezone],
+      isAllDay: dataItem.isAllDay,
+      title: dataItem.title,
+      description: dataItem.description,
+      recurrenceRule: dataItem.recurrenceRule,
+      recurrenceId: dataItem.recurrenceId,
+      recurrenceExceptions: [exceptions]
     });
 
     return this.formGroup;
@@ -83,9 +88,11 @@ export class AppComponent {
     this.editMode = EditMode.Series;
 
     this.editedEvent = {
-      Start: start,
-      End: end,
-      IsAllDay: isAllDay
+      eventType: this.eventLookups[0].value,
+      title: this.eventLookups[0].text,
+      start: start,
+      end: end,
+      isAllDay: isAllDay
     };
   }
 
@@ -100,14 +107,16 @@ export class AppComponent {
   }
 
   public saveHandler(formValue: any): void {
+    debugger;
     if (this.isNew) {
       //this.editService.create(formValue);
     } else {
-      this.handleUpdate(this.editedEvent, formValue, this.editMode);
+      // this.handleUpdate(this.editedEvent, formValue, this.editMode);
     }
   }
 
   public removeHandler({ sender, dataItem }: RemoveEvent): void {
+    debugger;
     sender.openRemoveConfirmationDialog().subscribe(shouldRemove => {
       if (shouldRemove) {
         //this.editService.remove(dataItem);
@@ -115,36 +124,15 @@ export class AppComponent {
     });
   }
 
+  public dragEndHandler({ sender, event, start, end, isAllDay }): void {
+    debugger;
+    let value = { Start: start, End: end, IsAllDay: isAllDay };
+    let dataItem = event.dataItem;
+
+    // this.handleUpdate(dataItem, value);
+  }
+
   public cancelHandler(): void {
     this.editedEvent = undefined;
-  }
-
-  private handleUpdate(item: any, value: any, mode: EditMode): void {
-    const service = this.editService;
-    if (mode === EditMode.Occurrence) {
-      // if (service.isException(item)) {
-      //   service.update(item, value);
-      // } else {
-      //   service.createException(item, value);
-      // }
-    } else {
-      // Item is not recurring or we're editing the entire series
-      // service.update(item, value);
-    }
-  }
-
-  private handleRemove(item: any, mode: EditMode): void {
-    const service = this.editService;
-    if (mode === EditMode.Series) {
-      // service.removeSeries(item);
-    } else if (mode === EditMode.Occurrence) {
-      // if (service.isException(item)) {
-      //   service.remove(item);
-      // } else {
-      //   service.removeOccurrence(item);
-      // }
-    } else {
-      // service.remove(item);
-    }
   }
 }

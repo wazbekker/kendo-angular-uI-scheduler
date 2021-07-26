@@ -7,7 +7,7 @@ import { CustomEvent } from './custom-event.interface';
 export class EditService {
   private events = [
     {
-      eventId: 1,
+      id: 1,
       eventType: 1,
       title: 'DAM Trading Day',
       start: new Date(2021, 6, 1),
@@ -15,7 +15,7 @@ export class EditService {
       isAllDay: true
     } as CustomEvent,
     {
-      eventId: 2,
+      id: 2,
       eventType: 2,
       title: 'FPM Weekly Trading Day',
       start: new Date(2021, 6, 2),
@@ -23,7 +23,7 @@ export class EditService {
       isAllDay: true
     } as CustomEvent,
     {
-      eventId: 3,
+      id: 3,
       eventType: 3,
       title: 'FPM Monthly Trading Day',
       start: new Date(2021, 6, 3),

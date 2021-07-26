@@ -1,7 +1,7 @@
 <kendo-scheduler [kendoSchedulerBinding]="events() | async" [selectedDate]="selectedDate" [editable]="true"
-  [selectedViewIndex]="selectedViewIndex" (slotDblClick)="slotDblClickHandler($event)"
-  (eventDblClick)="eventDblClickHandler($event)" (remove)="removeHandler($event)" style="height: 650px;"
-  [kendoSchedulerReactiveEditing]="createFormGroup">
+  [selectedViewIndex]="selectedViewIndex" (slotDblClick)="slotDblClickHandler($event)" (save)="saveHandler($event)"
+  (dragEnd)="dragEndHandler($event)" (eventDblClick)="eventDblClickHandler($event)" (remove)="removeHandler($event)"
+  style="height: 650px;" [kendoSchedulerReactiveEditing]="createFormGroup">
   <kendo-scheduler-month-view [eventHeight]="30">
   </kendo-scheduler-month-view>
 

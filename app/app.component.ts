@@ -36,6 +36,7 @@ export class AppComponent {
   }
 
   public slotDblClickHandler({ start, end, isAllDay }: SlotClickEvent): void {
+    debugger;
     this.isNew = true;
 
     this.editMode = EditMode.Series;
@@ -48,6 +49,7 @@ export class AppComponent {
   }
 
   public eventDblClickHandler({ sender, event }: EventClickEvent): void {
+    debugger;
     this.isNew = false;
 
     let dataItem = event.dataItem;
@@ -58,7 +60,7 @@ export class AppComponent {
 
   public saveHandler(formValue: any): void {
     if (this.isNew) {
-      this.editService.create(formValue);
+      //this.editService.create(formValue);
     } else {
       this.handleUpdate(this.editedEvent, formValue, this.editMode);
     }
@@ -67,7 +69,7 @@ export class AppComponent {
   public removeHandler({ sender, dataItem }: RemoveEvent): void {
     sender.openRemoveConfirmationDialog().subscribe(shouldRemove => {
       if (shouldRemove) {
-        this.editService.remove(dataItem);
+        //this.editService.remove(dataItem);
       }
     });
   }
@@ -79,29 +81,29 @@ export class AppComponent {
   private handleUpdate(item: any, value: any, mode: EditMode): void {
     const service = this.editService;
     if (mode === EditMode.Occurrence) {
-      if (service.isException(item)) {
-        service.update(item, value);
-      } else {
-        service.createException(item, value);
-      }
+      // if (service.isException(item)) {
+      //   service.update(item, value);
+      // } else {
+      //   service.createException(item, value);
+      // }
     } else {
       // Item is not recurring or we're editing the entire series
-      service.update(item, value);
+      // service.update(item, value);
     }
   }
 
   private handleRemove(item: any, mode: EditMode): void {
     const service = this.editService;
     if (mode === EditMode.Series) {
-      service.removeSeries(item);
+      // service.removeSeries(item);
     } else if (mode === EditMode.Occurrence) {
-      if (service.isException(item)) {
-        service.remove(item);
-      } else {
-        service.removeOccurrence(item);
-      }
+      // if (service.isException(item)) {
+      //   service.remove(item);
+      // } else {
+      //   service.removeOccurrence(item);
+      // }
     } else {
-      service.remove(item);
+      // service.remove(item);
     }
   }
 }

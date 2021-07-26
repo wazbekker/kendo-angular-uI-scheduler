@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import {
+  CreateFormGroupArgs,
   CrudOperation,
   EditMode,
   EventClickEvent,
@@ -20,8 +22,14 @@ export class AppComponent {
   public editedEvent: any;
   public editMode: EditMode;
   public isNew: boolean;
+  public formGroup: FormGroup;
 
-  constructor(private editService: EditService) {}
+  constructor(
+    private editService: EditService,
+    private formBuilder: FormBuilder
+  ) {
+    this.createFormGroup = this.createFormGroup.bind(this);
+  }
 
   public ngOnInit(): void {
     this.editService.getEvents();
@@ -33,6 +41,39 @@ export class AppComponent {
 
   public fields() {
     return this.editService.fields;
+  }
+
+  public createFormGroup(args: CreateFormGroupArgs): FormGroup {
+    // const dataItem = args.dataItem;
+    // const isOccurrence = args.mode === EditMode.Occurrence;
+    // const exceptions = isOccurrence ? [] : dataItem.recurrenceExceptions;
+
+    this.formGroup = this.formBuilder.group({
+      eventType: [1]
+      // id: args.isNew ? this.getNextId() : dataItem.id,
+      // start: [dataItem.start, Validators.required],
+      // end: [dataItem.end, Validators.required],
+      // startTimezone: [dataItem.startTimezone],
+      // endTimezone: [dataItem.endTimezone],
+      // isAllDay: dataItem.isAllDay,
+      // title: dataItem.title,
+      // description: dataItem.description,
+      // recurrenceRule: dataItem.recurrenceRule,
+      // recurrenceId: dataItem.recurrenceId,
+      // recurrenceExceptions: [exceptions]
+    });
+
+    return this.formGroup;
+  }
+
+  public isEditingSeries(editMode: EditMode): boolean {
+    return editMode === EditMode.Series;
+  }
+
+  public getNextId(): number {
+    const len = this.events.length;
+
+    return len === 0 ? 1 : this.events[this.events.length - 1].id + 1;
   }
 
   public slotDblClickHandler({ start, end, isAllDay }: SlotClickEvent): void {

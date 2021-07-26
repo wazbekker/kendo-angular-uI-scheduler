@@ -21,10 +21,10 @@
       </div> -->
       <div class="k-form-field">
         <span>Event Type</span>
-        <kendo-combobox formControlName="eventType" [data]="eventLookups" [textField]="'text'" [valueField]="'value'"
-          [valuePrimitive]="true" required>
+        <kendo-combobox [formControl]="formGroup.get('eventType')" [data]="eventLookups" [textField]="'text'"
+          [valueField]="'value'" [valuePrimitive]="true" required>
         </kendo-combobox>
       </div>
-
+    </div>
   </ng-template>
 </kendo-scheduler>

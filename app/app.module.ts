@@ -5,12 +5,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SchedulerModule } from '@progress/kendo-angular-scheduler';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 
 import { AppComponent } from './app.component';
 import { EditFormComponent } from './shared/edit-form/edit-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditService } from './shared/edit.service';
-import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -20,8 +20,7 @@ import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
     SchedulerModule,
     ButtonsModule,
     DateInputsModule,
-    HttpClientModule,
-    HttpClientJsonpModule
+    DropDownsModule
   ],
   declarations: [AppComponent, EditFormComponent],
   providers: [EditService],

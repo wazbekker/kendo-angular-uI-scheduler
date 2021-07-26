@@ -36,17 +36,17 @@ export class EditFormComponent {
   public active = false;
 
   public editForm = new FormGroup({
-    Title: new FormControl('', Validators.required),
-    Start: new FormControl('', Validators.required),
-    End: new FormControl('', Validators.required),
-    IsAllDay: new FormControl(false),
-    RecurrenceRule: new FormControl(),
-    RecurrenceID: new FormControl()
+    eventType: new FormControl(1)
+    // start: new FormControl('', Validators.required),
+    // end: new FormControl('', Validators.required),
+    // isAllDay: new FormControl(false)
   });
 
-  public get isEditingSeries(): boolean {
-    return this.editMode === EditMode.Series;
-  }
+  public eventLookups = [
+    { text: 'DAM Trading Day', value: 1 },
+    { text: 'FPM Weekly Trading Day', value: 2 },
+    { text: 'FPM Monthly Trading Day', value: 3 }
+  ] as Array<{ text: string; value: number }>;
 
   constructor(public formBuilder: FormBuilder) {}
 

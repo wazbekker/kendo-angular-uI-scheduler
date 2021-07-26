@@ -4,6 +4,7 @@ import {
   EditMode,
   EventClickEvent,
   RemoveEvent,
+  SchedulerEvent,
   SlotClickEvent
 } from '@progress/kendo-angular-scheduler';
 import { filter } from 'rxjs/operators';
@@ -20,10 +21,18 @@ export class AppComponent {
   public editMode: EditMode;
   public isNew: boolean;
 
-  constructor(public editService: EditService) {}
+  constructor(private editService: EditService) {}
 
   public ngOnInit(): void {
-    this.editService.read();
+    this.editService.getEvents();
+  }
+
+  public events() {
+    return this.editService.events$;
+  }
+
+  public fields() {
+    return this.editService.fields;
   }
 
   public slotDblClickHandler({ start, end, isAllDay }: SlotClickEvent): void {

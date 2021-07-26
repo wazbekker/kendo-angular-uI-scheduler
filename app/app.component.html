@@ -1,5 +1,5 @@
-<kendo-scheduler [selectedDate]="selectedDate" [selectedViewIndex]="selectedViewIndex"
-  [kendoSchedulerReactiveEditing]="createFormGroup" (slotDblClick)="slotDblClickHandler($event)"
+<kendo-scheduler [kendoSchedulerBinding]="events() | async" [selectedDate]="selectedDate" [editable]="true"
+  [selectedViewIndex]="selectedViewIndex" (slotDblClick)="slotDblClickHandler($event)"
   (eventDblClick)="eventDblClickHandler($event)" (remove)="removeHandler($event)" style="height: 650px;">
   <kendo-scheduler-month-view [eventHeight]="30">
   </kendo-scheduler-month-view>

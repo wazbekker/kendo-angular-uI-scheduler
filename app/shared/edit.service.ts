@@ -9,6 +9,8 @@ import {
   SchedulerModelFields
 } from '@progress/kendo-angular-scheduler';
 
+import { parseDate } from '@progress/kendo-angular-intl';
+
 import { MyEvent } from './my-event.interface';
 
 const CREATE_ACTION = 'create';

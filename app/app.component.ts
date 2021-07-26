@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  CreateFormGroupArgs,
+  CrudOperation,
   EditMode,
-  SchedulerEvent
+  EventClickEvent,
+  RemoveEvent,
+  SlotClickEvent
 } from '@progress/kendo-angular-scheduler';
+import { filter } from 'rxjs/operators';
+import { EditService } from './shared/edit.service';
 
 @Component({
   selector: 'my-app',
@@ -13,40 +16,83 @@ import {
 export class AppComponent {
   public selectedDate: Date = new Date();
   public selectedViewIndex = 1;
-  public events: SchedulerEvent[] = [
-    {
-      id: 1,
-      title: 'Breakfast',
-      start: new Date('2018-10-22T09:00:00'),
-      end: new Date('2018-10-22T09:30:00')
+  public editedEvent: any;
+  public editMode: EditMode;
+  public isNew: boolean;
+
+  constructor(public editService: EditService) {}
+
+  public ngOnInit(): void {
+    this.editService.read();
+  }
+
+  public slotDblClickHandler({ start, end, isAllDay }: SlotClickEvent): void {
+    this.isNew = true;
+
+    this.editMode = EditMode.Series;
+
+    this.editedEvent = {
+      Start: start,
+      End: end,
+      IsAllDay: isAllDay
+    };
+  }
+
+  public eventDblClickHandler({ sender, event }: EventClickEvent): void {
+    this.isNew = false;
+
+    let dataItem = event.dataItem;
+
+    this.editMode = EditMode.Series;
+    this.editedEvent = dataItem;
+  }
+
+  public saveHandler(formValue: any): void {
+    if (this.isNew) {
+      this.editService.create(formValue);
+    } else {
+      this.handleUpdate(this.editedEvent, formValue, this.editMode);
     }
-  ];
-  public formGroup: FormGroup;
-
-  constructor(private formBuilder: FormBuilder) {
-    this.createFormGroup = this.createFormGroup.bind(this);
   }
 
-  public createFormGroup(args: CreateFormGroupArgs): FormGroup {
-    const dataItem = args.dataItem;
-    const isOccurrence = args.mode === (EditMode.Occurrence as any);
-    // const exceptions = isOccurrence ? [] : dataItem.recurrenceExceptions;
-
-    this.formGroup = this.formBuilder.group({
-      id: args.isNew ? this.getNextId() : dataItem.id,
-      start: [dataItem.start, Validators.required],
-      end: [dataItem.end, Validators.required],
-      isAllDay: true,
-      title: dataItem.title,
-      description: dataItem.description
+  public removeHandler({ sender, dataItem }: RemoveEvent): void {
+    sender.openRemoveConfirmationDialog().subscribe(shouldRemove => {
+      if (shouldRemove) {
+        this.editService.remove(dataItem);
+      }
     });
-
-    return this.formGroup;
   }
 
-  public getNextId(): number {
-    const len = this.events.length;
+  public cancelHandler(): void {
+    this.editedEvent = undefined;
+  }
 
-    return len === 0 ? 1 : this.events[this.events.length - 1].id + 1;
+  private handleUpdate(item: any, value: any, mode: EditMode): void {
+    const service = this.editService;
+    if (mode === EditMode.Occurrence) {
+      if (service.isException(item)) {
+        service.update(item, value);
+      } else {
+        service.createException(item, value);
+      }
+    } else {
+      // Item is not recurring or we're editing the entire series
+      service.update(item, value);
+    }
+  }
+
+  private handleRemove(item: any, mode: EditMode): void {
+    const service = this.editService;
+    if (mode === EditMode.Series) {
+      service.removeSeries(item);
+    } else if (mode === EditMode.Occurrence) {
+      if (service.isException(item)) {
+        service.remove(item);
+      } else {
+        service.removeOccurrence(item);
+      }
+    } else {
+      service.remove(item);
+    }
   }
 }

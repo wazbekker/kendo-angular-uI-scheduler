@@ -1,25 +1,13 @@
-<kendo-scheduler [kendoSchedulerBinding]="events() | async" [selectedDate]="selectedDate" [editable]="true"
+<kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate" [editable]="true"
   [selectedViewIndex]="selectedViewIndex" (slotDblClick)="slotDblClickHandler($event)" (save)="saveHandler($event)"
   (dragEnd)="dragEndHandler($event)" (eventDblClick)="eventDblClickHandler($event)" (remove)="removeHandler($event)"
   style="height: 650px;" [kendoSchedulerReactiveEditing]="createFormGroup">
   <kendo-scheduler-month-view [eventHeight]="30">
   </kendo-scheduler-month-view>
 
-  <!-- <scheduler-edit-form [event]="editedEvent" [editMode]="editMode" [isNew]="isNew" (save)="saveHandler($event)"
-    (cancel)="cancelHandler()" style="display: block; margin-top: 20px;">
-  </scheduler-edit-form> -->
-
   <ng-template kendoSchedulerEditDialogTemplate autoFocusedElement=".title-input" let-formGroup="formGroup"
     let-isNew="isNew" let-editMode="editMode">
     <div class="k-form-inline">
-      <!-- <div class="k-form-field">
-        <span>Title</span>
-        <input
-              class="k-textbox title-input"
-              placeholder="Title"
-              [formControl]="formGroup.get('title')"
-            />
-      </div> -->
       <div class="k-form-field">
         <span>Event Type</span>
         <kendo-combobox [formControl]="formGroup.get('eventType')" [data]="eventLookups" [textField]="'text'"

@@ -2,14 +2,12 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   CreateFormGroupArgs,
-  CrudOperation,
   EditMode,
   EventClickEvent,
   RemoveEvent,
-  SchedulerEvent,
   SlotClickEvent
 } from '@progress/kendo-angular-scheduler';
-import { EditService } from './shared/edit.service';
+import { CustomEvent } from './shared/custom-event.interface';
 
 @Component({
   selector: 'my-app',
@@ -29,20 +27,41 @@ export class AppComponent {
     { text: 'FPM Monthly Trading Day', value: 3 }
   ] as Array<{ text: string; value: number }>;
 
+  public events = [
+    {
+      id: 1,
+      eventType: 1,
+      title: 'DAM Trading Day',
+      start: new Date(2021, 6, 1),
+      end: new Date(2021, 6, 1),
+      isAllDay: true
+    } as CustomEvent,
+    {
+      id: 2,
+      eventType: 2,
+      title: 'FPM Weekly Trading Day',
+      start: new Date(2021, 6, 2),
+      end: new Date(2021, 6, 2),
+      isAllDay: true
+    } as CustomEvent,
+    {
+      id: 3,
+      eventType: 3,
+      title: 'FPM Monthly Trading Day',
+      start: new Date(2021, 6, 3),
+      end: new Date(2021, 6, 3),
+      isAllDay: true
+    } as CustomEvent
+  ] as CustomEvent[];
+
   constructor(
-    private editService: EditService,
+    // private editService: EditService,
     private formBuilder: FormBuilder
   ) {
     this.createFormGroup = this.createFormGroup.bind(this);
   }
 
-  public ngOnInit(): void {
-    this.editService.getEvents();
-  }
-
-  public events() {
-    return this.editService.events$;
-  }
+  public ngOnInit(): void {}
 
   // public fields() {
   //   return this.editService.fields;

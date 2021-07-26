@@ -2,7 +2,7 @@
   [selectedViewIndex]="selectedViewIndex" (slotDblClick)="slotDblClickHandler($event)" (save)="saveHandler($event)"
   (dragEnd)="dragEndHandler($event)" (eventDblClick)="eventDblClickHandler($event)" (remove)="removeHandler($event)"
   style="height: 650px;" [kendoSchedulerReactiveEditing]="createFormGroup" [eventStyles]="getEventStyles">
-  <kendo-scheduler-month-view [eventHeight]="30">
+  <kendo-scheduler-month-view>
   </kendo-scheduler-month-view>
 
   <ng-template kendoSchedulerEditDialogTemplate autoFocusedElement=".title-input" let-formGroup="formGroup"

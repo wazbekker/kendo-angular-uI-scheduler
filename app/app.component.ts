@@ -58,18 +58,11 @@ export class AppComponent {
     } as CustomEvent
   ] as CustomEvent[];
 
-  constructor(
-    // private editService: EditService,
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this.createFormGroup = this.createFormGroup.bind(this);
   }
 
   public ngOnInit(): void {}
-
-  // public fields() {
-  //   return this.editService.fields;
-  // }
 
   public createFormGroup(args: CreateFormGroupArgs): FormGroup {
     const dataItem = args.dataItem;
@@ -131,6 +124,14 @@ export class AppComponent {
 
   public saveHandler(formValue: any): void {
     debugger;
+
+    const eventTypeId = formValue.formGroup.controls['eventType'].value;
+    const eventType = this.eventLookups.find(
+      item => item.value === eventTypeId
+    );
+
+    console.log(eventType.text);
+
     if (this.isNew) {
       //this.editService.create(formValue);
     } else {
